@@ -33,3 +33,4 @@ coverage/
 # Additional
 *.local
 *.cache
+apphosting.local.yaml
