@@ -1,12 +1,30 @@
 {
-  "name": "horizon-ai-template-pro",
-  "version": "3.0.0",
+  "name": "AI workin progress": "3.0.0",
   "private": true,
+    "name": "functions",
+    "description": "Cloud Functions for Firebase",
+    "scripts": {
+      "lint": "eslint ."
+    },
+    "engines": {
+      "node": "18"
+    },
+    "main": "index.js",
+    "dependencies": {
+      "firebase-admin": "^11.0.0",
+      "firebase-functions": "^4.0.0"
+    },
+    "devDependencies": {
+      "eslint": "^8.0.0",
+      "eslint-plugin-promise": "^6.0.0"
+    },
+    "private": true
+  }
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "nmp run dev && firebase build ",
     "start": "next start",
-    "lint": "eslint . --ext .js .ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@babel/traverse": "^7.24.6",
