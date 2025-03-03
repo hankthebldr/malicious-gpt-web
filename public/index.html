@@ -1,4 +1,35 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <title>Malicious GPT Web - Cloud Security Demo</title>
+   <link rel="stylesheet" href="styles.css">
+   <script defer src="simulation.js"></script>
+   <!-- Firebase SDKs -->
+   <script defer src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+   <script defer src="https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics-compat.js"></script>
+   <script defer src="/__/firebase/init.js"></script>
+</head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cloud Security Demo – Palo Alto Cortex & AWS Integration</title>
+  <!-- Firebase SDK (for Hosting/Analytics, replace with needed scripts) -->
+  <script defer src="https://www.gstatic.com/firebasejs/9.19.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/9.19.1/firebase-analytics-compat.js"></script>
+  <script defer>
+    // TODO: Replace with your Firebase project configuration if applicable
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      // ...other Firebase config entries...
+      measurementId: "YOUR_MEASUREMENT_ID"
+    };
+    // Initialize Firebase (analytics is optional)
+    if (typeof firebase !== "undefined") {
+      firebase.initializeApp(firebaseConfig);
+      if ("analytics" in firebase) {
+        firebase.analytics();
 <html>
   <head>
     <meta charset="utf-8">
@@ -38,54 +69,275 @@
         body, #message { margin-top: 0; background: white; box-shadow: none; }
         body { border-top: 16px solid #ffa100; }
       }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #ffffff;
+      color: #333;
+    }
+    h1, h2, h3 {
+      color: #2c3e50;
+    }
+    h1 {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+    }
+    h2 {
+      margin-top: 2em;
+      border-bottom: 2px solid #eaeaea;
+      padding-bottom: 0.3em;
+    }
+    h3 {
+      margin-top: 1.5em;
+      color: #34495e;
+    }
+    p {
+      line-height: 1.6;
+    }
+    nav {
+      background: #f8f9fa;
+      padding: 10px;
+      margin-bottom: 30px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 15px;
+      text-decoration: none;
+      color: #0366d6;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .demo-box {
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      padding: 15px;
+      margin: 10px 0 20px 0;
+    }
+    .demo-box pre {
+      background: #272822;
+      color: #f8f8f2;
+      padding: 10px;
+      overflow-x: auto;
+    }
+    .demo-box p {
+      margin-top: 0;
+    }
+    button.demo-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
+    button.demo-btn:hover {
+      background: #0056b3;
+    }
+    ol li {
+      margin: 0.5em 0;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="#cortex-cloud">Palo Alto Cloud Features</a>
+  <a href="#aws-use-cases">AWS Security Use Cases</a>
+  <a href="#firebase-compatibility">Firebase Hosting</a>
+  <a href="#troubleshooting">Troubleshooting SSL</a>
+</nav>
+
+<h1>Cortex on Cloud Demo </h1>
+<p>This demo page showcases cloud security features from <strong>Palo Alto Networks</strong> and how they integrate with <strong>Amazon Web Services (AWS)</strong>. It highlights <em>Cortex XSIAM</em> and <em>Prisma Cloud</em> capabilities, demonstrates AWS security use cases (threat detection, compliance monitoring, runtime security), and is configured for easy deployment on <em>Firebase Hosting</em>. If you encounter HTTPS certificate issues when hosting this page, see the troubleshooting section below for detailed guidance.</p>
+
+<section id="simulation-controls">
+  <button onclick="simulateMaliciousDownload()">Simulate Malicious Download</button>
+  <button onclick="simulatePhishingAttack()">Simulate Phishing Attack</button>
+  <button onclick="simulateDataExfiltration()">Simulate Data Exfiltration</button>
+</section>
+
+<section id="simulation-output">
+  <pre id="logOutput">Simulation logs will appear here.</pre>
+</section>
+
+<!-- Palo Alto Cortex on Cloud Features Section -->
+<h2 id="cortex-cloud">Palo Alto Cortex on Cloud Features</h2>
+<p><strong>Cortex XSIAM (Extended Security Intelligence & Automation Management)</strong> is Palo Alto Networks’ modern SOC platform built for the cloud. It consolidates key security operations capabilities—like Endpoint Detection and Response (EDR), Extended Detection and Response (XDR), Security Orchestration, Automation and Response (SOAR), Attack Surface Management (ASM), and SIEM—into a unified solution Cortex XSIAM harnesses machine intelligence to automate data integration and analysis, triaging the majority of alerts so that analysts can focus on critical incidents . It automatically stitches together data from endpoints, networks, cloud services, and identity systems to detect advanced threats with precision, providing a complete picture of each attack along with recommended actions for lightning-fast response Crucially, Cortex XSIAM integrates with AWS environments: for example, it can ingest AWS CloudTrail audit logs and AWS Security Hub findings to enhance threat visibility in your cloud infrastructure  An AWS deployment of Cortex XSIAM (available via AWS Marketplace) allows organizations to leverage these capabilities directly in their AWS cloud, enabling seamless data collection and rapid, automated incident response across their AWS accounts.</p>
+
+<p><strong>Cortex Cloud  Cloud</strong> is Palo Alto Networks’ comprehensive Cloud-Native Application Protection Platform (CNAPP) that provides security from code to cloud across multicloud environments  For AWS, Prisma Cloud offers broad protection and compliance coverage for your applications and infrastructure  It continuously monitors AWS resources (like EC2, S3, IAM, containers, etc.) to identify misconfigurations, vulnerabilities, and security risks throughout the development lifecycle . With cloud-native integration, it helps ensure your AWS environment meets compliance standards (such as CIS AWS Foundations, PCI-DSS, HIPAA) by checking configurations against best practices and alerting on violations . Prisma Cloud also provides runtime protection for workloads on AWS: it deploys lightweight defenders on hosts, containers (ECS/EKS), and serverless functions to detect and prevent active threats in real time [ For example, it can automatically block suspicious processes or network activity in an AWS EC2 instance or container if a breach is detected, safeguarding your cloud workloads from advanced attacks and zero-day exploits  In summary, Prisma Cloud integrates deeply with AWS – via read-only APIs and IAM roles for posture management, and via installed agents (“Defenders”) for workload protection – to provide unified, proactive defense across your entire AWS environment.</p>
+
+<!-- AWS Security Use Cases Section -->
+<h2 id="aws-use-cases">AWS Security Use Cases – Demonstrations</h2>
+<p>The following are real-world AWS security scenarios and how the Palo Alto solutions help address them. Each use case includes a brief simulation to demonstrate how threats and issues might be detected and handled in an AWS environment.</p>
+
+<h3>1. Threat Detection and Automated Response</h3>
+<p><em>Scenario:</em> A potential breach is detected in an AWS account. For instance, an IAM user’s credentials are compromised and used from an unusual location at an odd hour. AWS CloudTrail logs this anomalous login event. <strong>Cortex XSIAM</strong> ingests the CloudTrail log (through its AWS integration) and uses machine learning-driven analytics to flag this as suspicious. Because XSIAM correlates identity data with network and endpoint telemetry, it recognizes this login as part of a broader attack pattern rather than an isolated event . An alert is automatically raised in the Cortex XSIAM console, and an automated playbook is triggered via its SOAR capability to contain the threat – for example, disabling the affected IAM user and alerting the security team.</p>
+<p>In this demo, clicking the button will simulate how such an alert might be presented:</p>
+<button class="demo-btn" onclick="toggleDemo('threatDemo', this)">Simulate Threat</button>
+<div id="threatDemo" class="demo-box" style="display:none;">
+  <p><strong>Alert:</strong> Suspicious AWS Console login detected by Cortex XSIAM!</p>
+  <pre>
+// AWS CloudTrail Log Excerpt (simulated)
+EventName: ConsoleLogin
+User: IAMUser123
+SourceIP: 203.0.113.5        // Unrecognized IP
+LoginTime: 2025-03-03T01:15:30Z
+Status: Success (MFA Bypassed)
+  </pre>
+  <p><strong>Cortex XSIAM Action:</strong> Anomalous login pattern identified. User IAMUser123’s access has been automatically <span style="color:red;">suspended</span> and an incident ticket has been created for SecOps. An analyst is advised to investigate the user's recent activity and verify if the login was authorized [oai_citation_attribution:14‡aws.amazon.com](https://aws.amazon.com/marketplace/pp/prodview-ifomasljwgglg#:~:text=,fast%20response).</p>
+</div>
+
+<h3>2. Compliance Monitoring and Posture Management</h3>
+<p><em>Scenario:</em> An organization must ensure its AWS environment stays compliant with industry standards and internal policies. <strong>Prisma Cloud</strong> continuously scans the AWS configuration for issues. Suppose an S3 bucket was accidentally left public, or an EC2 instance is missing encryption on its attached EBS volume. Such misconfigurations could violate compliance rules (e.g., CIS benchmarks). Prisma Cloud’s Cloud Security Posture Management (CSPM) would detect these issues in real-time [oai_citation_attribution:15‡aws.amazon.com](https://aws.amazon.com/marketplace/pp/prodview-fhoptf6o4hcyu#:~:text=,days). Security teams can view a dashboard of compliance findings, showing which AWS resources are out of compliance and why, along with guidelines to fix them.</p>
+<p>Below is a simulation of compliance scan results – click the button to view identified issues and their compliance status:</p>
+<button class="demo-btn" onclick="toggleDemo('complianceDemo', this)">Run Compliance Scan</button>
+<div id="complianceDemo" class="demo-box" style="display:none;">
+  <ul>
+    <li>S3 Bucket <code>myapp-backup</code> – <span style="color:red;">Public access enabled (Non-compliant)</span></li>
+    <li>Security Group <code>sg-012345</code> – <span style="color:red;">Port 22 open to 0.0.0.0/0 (Non-compliant)</span></li>
+    <li>EC2 Volume <code>vol-0abcd</code> – <span style="color:orange;">Not encrypted (Warning)</span></li>
+    <li>IAM User <code>Alice</code> – <span style="color:green;">MFA enabled (Compliant)</span></li>
+  </ul>
+  <p><strong>Prisma Cloud Action:</strong> The above issues have been flagged. The security team is advised to remediate: e.g., restrict the S3 bucket access, tighten the security group, enable encryption on the EBS volume. Compliance reports in Prisma Cloud map these findings to frameworks (CIS AWS, PCI-DSS, etc.) for audit purposes [oai_citation_attribution:16‡aws.amazon.com](https://aws.amazon.com/marketplace/pp/prodview-fhoptf6o4hcyu#:~:text=,days). Alerts are sent if new violations occur, ensuring continuous compliance monitoring.</p>
+</div>
+
+<h3>3. Runtime Threat Protection for AWS Workloads</h3>
+<p><em>Scenario:</em> A containerized application running on AWS (for example, on Amazon ECS or EKS) comes under attack at runtime. Imagine a malicious process starts inside a container due to an exploited vulnerability. <strong>Prisma Cloud</strong>’s Defender agent, which is deployed on the host or within the container, detects this behavior instantly. It could be a crypto-mining malware trying to run, or an unauthorized shell access. Prisma Cloud’s runtime protection will automatically stop the malicious process and isolate the workload if necessary  It also logs the incident and alerts the security team, providing detailed forensics (such as which process, in which container/VM, and what actions were taken).</p>
+<p>Click below to simulate a runtime security incident and see how it might be reported:</p>
+<button class="demo-btn" onclick="toggleDemo('runtimeDemo', this)">Simulate Runtime Attack</button>
+<div id="runtimeDemo" class="demo-box" style="display:none;">
+  <p><strong>Incident:</strong> Threat detected in AWS workload!</p>
+  <pre>
+Container: web-app-1 (Image: acme/webapp:latest)
+Node: ip-172-31-12-34.ec2.internal
+Detected Malicious Activity: Unauthorized crypto-miner process
+Action Taken: Process killed, container isolated
+  </pre>
+  <p><strong>Prisma Cloud Response:</strong> The suspicious process was <span style="color:red;">blocked</span> immediately by Prisma Cloud’s Defender. The affected container <code>web-app-1</code> was quarantined to prevent lateral movement. An alert has been sent to the SOC with full details for investigation. This showcases how runtime protection can instantly neutralize threats in AWS environments, covering hosts, containers, and serverless functions [oai_citation_attribution:18‡aws.amazon.com](https://aws.amazon.com/marketplace/pp/prodview-fhoptf6o4hcyu#:~:text=,days).</p>
+</div>
+
+<!-- Firebase Hosting Compatibility Section -->
+<h2 id="firebase-compatibility">Firebase Hosting Compatibility</h2>
+<p>This page is optimized for deployment on <strong>Firebase Hosting</strong>. It is a single, static <code>index.html</code> file that can be dropped into a Firebase project’s <code>public/</code> directory. All resources and scripts used are loaded over HTTPS to ensure there are no mixed content issues when served securely. The Firebase SDK scripts included in the header are optional and demonstrate how one might initialize Firebase services (such as Analytics) on the page. Be sure to replace the placeholder configuration with your actual Firebase project config if you intend to use Firebase features (analytics, auth, etc.). If you’re using only Firebase Hosting without additional Firebase services, you may remove or ignore the SDK scripts.</p>
+
+<p><strong>Deploying to Firebase Hosting:</strong> To deploy, ensure you have initialized Firebase Hosting in your project (via <code>firebase init hosting</code>). Then simply run <code>firebase deploy</code>. Firebase will automatically serve this page at your site’s URL (e.g., <code>https://your-project.web.app</code> or your custom domain). Firebase Hosting will also provision an HTTPS certificate for your custom domain if one is configured. The next section provides troubleshooting advice for any HTTPS certificate issues you might encounter when using Firebase Hosting.</p>
+
+<!-- Troubleshooting HTTPS Certificate Issues Section -->
+<h2 id="troubleshooting">Troubleshooting HTTPS Certificate Issues</h2>
+<p>If your site is deployed on Firebase Hosting but not showing as secure (HTTPS lock not present or browser showing certificate errors), follow these steps to resolve common issues:</p>
+<ol>
+  <li><strong>Check DNS Settings:</strong> Ensure your custom domain’s DNS records are correctly pointed to Firebase. For root domains (example.com), add A records as instructed by Firebase (typically pointing to Firebase’s IP <code>199.36.158.100</code>). For subdomains (www.example.com), use the A record or CNAME provided by Firebase. Both the root and <code>www</code> (if used) should resolve to Firebase’s hosting servers [oai_citation_attribution:19‡reddit.com](https://www.reddit.com/r/Firebase/comments/1e7y145/not_able_to_host_my_www_website/#:~:text=1).</li>
+  <li><strong>Verify Domain in Firebase:</strong> In the Firebase Console, go to Hosting and confirm that your custom domain is listed and verified. If you just added it, you must verify domain ownership by adding the TXT record Firebase gave you to your domain’s DNS [oai_citation_attribution:20‡reddit.com](https://www.reddit.com/r/Firebase/comments/1e7y145/not_able_to_host_my_www_website/#:~:text=2). The domain status in Firebase Hosting should show as “Connected” (after verification and DNS propagation).</li>
+  <li><strong>Allow Certificate Provisioning Time:</strong> Once the domain is added and DNS is set, Firebase will request and install an SSL certificate for your domain automatically. This process can take a bit of time (often just a few minutes, but it may be a few hours, and in rare cases up to 24 hours). During this period, the domain status might display “Pending” and the site could appear insecure. Be patient and check again later. For example, it’s reported that a Firebase custom domain became secure after about 3 hours, once the status changed to “connected” [oai_citation_attribution:21‡stackoverflow.com](https://stackoverflow.com/questions/39158677/firebase-hosting-using-custom-domain-has-ssl-cert-pointing-to-firebase-com#:~:text=Faced%20the%20same%20problem%20when,on%20your%20Firebase%20Hosting%20Dashboard).</li>
+  <li><strong>DNS Propagation & Cache:</strong> DNS changes might take time to propagate worldwide. Even after Firebase provisions the certificate, your local DNS cache or ISP cache might still direct to an old address. It’s recommended to wait up to 24-48 hours after making DNS changes [oai_citation_attribution:22‡reddit.com](https://www.reddit.com/r/Firebase/comments/1e7y145/not_able_to_host_my_www_website/#:~:text=3). Also, clear your browser cache or test the site in an incognito/private window and on different networks/devices [oai_citation_attribution:23‡reddit.com](https://www.reddit.com/r/Firebase/comments/1e7y145/not_able_to_host_my_www_website/#:~:text=4) to rule out cached responses. This ensures you’re seeing the current certificate status.</li>
+  <li><strong>Mixed Content Check:</strong> Verify that all resources on the page are being loaded over HTTPS. If you have any images, scripts, or CSS files loaded via an <code>http://</code> URL, modern browsers will flag the page as not fully secure. Update all resource URLs to <code>https://</code>. (You can use your browser’s developer console to spot any mixed content warnings.) [oai_citation_attribution:24‡moldstud.com](https://moldstud.com/articles/p-a-complete-guide-to-troubleshooting-and-resolving-common-issues-with-firebase-hosting#:~:text=match%20at%20L242%201,mixed%20content%20on%20your%20pages)</li>
+  <li><strong>Advanced Domain Setup Issues:</strong> If you used Firebase’s “advanced” setup for your custom domain (which involves hosting a verification file or CNAME for verification instead of a TXT record), ensure that the verification token or file is correctly in place. SSL certificate challenges can fail if the token is missing or incorrect [oai_citation_attribution:25‡firebase.google.com](https://firebase.google.com/docs/app-hosting/custom-domain#:~:text=Troubleshooting%20tip%3A%20If%20it%27s%20been,cases%2C%20SSL%20challenges%20might). Consider removing and re-adding the domain through the simpler verification method (TXT record) if issues persist. In rare cases where everything above is correct and after ample time the certificate is still not provisioned, reach out to Firebase Support for assistance.</li>
+</ol>
+<p>By following the above steps, you should be able to resolve the majority of HTTPS certificate issues on Firebase Hosting. Once fixed, your demo page will be fully accessible over a secure HTTPS connection, indicated by the browser’s padlock icon.</p>
+
+<script>
+  // Toggle function for demo boxes
+  function toggleDemo(id, btn) {
+    var elem = document.getElementById(id);
+    if (!elem) return;
+    var isHidden = (elem.style.display === '' || elem.style.display === 'none');
+    elem.style.display = isHidden ? 'block' : 'none';
+    if (btn) {
+      btn.textContent = isHidden ? 'Hide Demo' : (btn.textContent.includes('Hide') ? 'Show Demo' : btn.textContent);
+    }
+  }
+</script>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cortex on Cloud Demo – Palo Alto & AWS Security</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- Firebase SDK (version aligned to latest compat version 11.4.0) -->
+    <script defer src="https://www.gstatic.com/firebasejs/11.4.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/11.4.0/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+
+    <!-- Simulation JS -->
+    <script defer src="simulation.js"></script>
+
+    <script defer>
+        // Replace the placeholders with your actual Firebase configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof firebase !== 'undefined') {
+                firebase.initializeApp(firebaseConfig);
+                if ("analytics" in firebase) {
+                    firebase.analytics();
+                    console.log('Firebase Analytics initialized successfully.');
+                }
+            } else {
+                console.error('Firebase SDK failed to load.');
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <nav>
+        <a href="#cortex-cloud">Palo Alto Cloud Features</a>
+        <a href="#aws-use-cases">AWS Security Use Cases</a>
+        <a href="#firebase-compatibility">Firebase Hosting</a>
+        <a href="#troubleshooting">Troubleshooting SSL</a>
+    </nav>
+
+    <header>
+        <h1>Malicous-GPT & Agent </h1>
+        <p>This demo showcases Palo Alto Networks' Cortex XSIAM and Prisma Cloud integrated with AWS security scenarios.</p>
+    </header>
+
+    <section id="simulation-controls">
+        <button onclick="simulateMaliciousDownload()">Simulate Malicious Download</button>
+        <button onclick="simulatePhishingAttack()">Simulate Phishing Attack</button>
+        <button onclick="simulateDataExfiltration()">Simulate Data Exfiltration</button>
+        <button onclick="simulateDataExfiltration()">Detonate Ransomare</button>
+        <button onclick="simulateDataExfiltration()">Build Malicious-AI-Agent </button>
+    </section>
+
+    <section id="simulation-output">
+        <pre id="logOutput">Simulation logs will appear here.</pre>
+    </section>
+
+    <footer>
+        <p>© Palo Alto Networks Demo | Hosted securely on Firebase</p>
+    </footer>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        // Simple toggle function for demo scenarios (ensure simulation.js defines these actions)
+        function toggleDemo(id, btn) {
+            const elem = document.getElementById(id);
+            if (!elem) return;
+            const isHidden = (elem.style.display === '' || elem.style.display === 'none');
+            elem.style.display = isHidden ? 'block' : 'none';
+            btn.textContent = isHidden ? 'Hide Demo' : 'Show Demo';
         }
-      });
     </script>
-  </body>
+</body>
 </html>
